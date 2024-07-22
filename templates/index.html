@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Port Scanner</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+    <div class="container">
+        <center>
+        <p>Written by <a href="https://www.linkedin.com/in/njot/" target="_blank">Navjot Singh</a></p>
+        </center>
+        <h1 class="mt-5">Port Scanner</h1>
+        <!-- Form to get user inputs for IP, protocol, and ports -->
+        <form method="POST" action="/">
+            <div class="form-group">
+                <label for="ip">IP Address</label>
+                <input type="text" class="form-control" id="ip" name="ip" required>
+            </div>
+            <div class="form-group">
+                <label for="ports_option">Ports</label>
+                <select class="form-control" id="ports_option" name="ports_option" onchange="togglePortInputs()">
+                    <option value="all">All Ports</option>
+                    <option value="top100">Top 100 Ports</option>
+                    <option value="range">Range of Ports</option>
+                    <option value="specific">Specific Ports</option>
+                </select>
+            </div>
+            <div class="form-group" id="range_ports_group" style="display:none;">
+                <label for="range_ports">Port Range (e.g., 20-80)</label>
+                <input type="text" class="form-control" id="range_ports" name="range_ports">
+            </div>
+            <div class="form-group" id="specific_ports_group" style="display:none;">
+                <label for="specific_ports">Specific Ports (comma separated, e.g., 22,80,443)</label>
+                <input type="text" class="form-control" id="specific_ports" name="specific_ports">
+            </div>
+            <button type="submit" class="btn btn-primary">Scan</button>
+        </form>
+        <!-- Display results if available -->
+        {% if open_ports is not none %}
+        <h2 class="mt-5">Open Ports on {{ ip }}:</h2>
+        <ul class="list-group">
+            {% for port, protocol in open_ports %}
+            <li class="list-group-item">{{ port }} ({{ protocol.upper() }})</li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('download_file', filename=report_filename) }}" class="btn btn-success mt-3">Download Report</a>
+        {% endif %}
+    </div>
+
+    <script>
+        // Function to toggle the visibility of port input fields
+        function togglePortInputs() {
+            var portsOption = document.getElementById('ports_option').value;
+            document.getElementById('range_ports_group').style.display = portsOption === 'range' ? 'block' : 'none';
+            document.getElementById('specific_ports_group').style.display = portsOption === 'specific' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
