@@ -17,8 +17,8 @@ This is a simple web application that scans a specified IP address for open port
 
 <ol>
     <li>Clone the repository:
-        <pre><code>git clone https://github.com/yourusername/port_scanner.git
-cd port_scanner
+        <pre><code>https://github.com/nav-mtl/IP-Port-scanner.git
+        cd IP-Port-scanner
         </code></pre>
     </li>
     <li>Install the required packages:
